@@ -1,7 +1,7 @@
 BELLMAN_FORD = "bellman_ford.cpp"
 FLOYD_WARSHALL = "floyd_warshall.cpp"
 DIJKSTRA = "dijkstra.cpp"
-PRIM = "Prim/prim.cpp"
+PRIM = "prim.cpp"
 
 bellman_ford:
 	g++ 	$(BELLMAN_FORD)	 -o		bellman_ford
