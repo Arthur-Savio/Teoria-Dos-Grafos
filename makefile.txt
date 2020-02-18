@@ -1,0 +1,16 @@
+BELLMAN_FORD = "bellman_ford.cpp"
+FLOYD_WARSHALL = "floyd_warshall.cpp"
+DIJKSTRA = "dijkstra.cpp"
+PRIM = "Prim/prim.cpp"
+
+bellman_ford:
+	g++ 	$(BELLMAN_FORD)	 -o		bellman_ford
+
+floyd_warshall:
+	g++ 	$(FLOYD_WARSHALL)	 -o		floyd_warshall
+
+dijkstra:
+	g++ 	$(DIJKSTRA)	 -o		dijkstra
+
+prim:
+	g++ 	$(PRIM)	 -o		prim
