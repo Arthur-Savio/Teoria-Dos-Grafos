@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
+#include <iostream>
 
 using namespace std;
 
-void print_solution(int dist[], int n)
+void print_solution(int dist[], int n, int src)
 {
-    cout << "Distance from source: " << endl;
+    cout << "Distance from: " << src << endl;
     for (int i = 0; i < n; i++)
         cout << i << " dist: " << dist[i] << endl;
 }
@@ -22,10 +23,10 @@ void bellman_ford(int graph[][3], int V, int E, int src)
 
         for (int j = 0; j < E; j++)
         {
-            if (dist[graph[j][0]] + graph[j][2] <
-                dist[graph[j][1]])
-                dist[graph[j][1]] =
-                    dist[graph[j][0]] + graph[j][2];
+            if (dist[graph[j][0]] + graph[j][2] < dist[graph[j][1]])
+            {
+                dist[graph[j][1]] = dist[graph[j][0]] + graph[j][2];
+            }
         }
     }
 
@@ -36,13 +37,57 @@ void bellman_ford(int graph[][3], int V, int E, int src)
         int weight = graph[i][2];
     }
 
-    print_solution(dist, V);
+    print_solution(dist, V, src);
 }
 
-int main()
+bool file_exist(string filename)
 {
-    int graph[][3] = {{0, 1, -1}, {0, 2, 4}, {1, 2, 3}, {1, 3, 2}, {1, 4, 2}, {3, 2, 5}, {3, 1, 1}, {4, 3, -3}};
+    ifstream f(filename);
+    return f.is_open();
+}
 
-    bellman_ford(graph, 5, 8, 0);
+bool get_file(int argc, char *argv[], ifstream &file)
+{
+    if (argc <= 1)
+    {
+        cout << "Missing Arguments ! " << endl;
+        return false;
+    }
+    else if (!file_exist(argv[1]))
+    {
+        cout << "File " << argv[1] << " not found." << endl;
+        cout << "Try Again! " << endl;
+        return false;
+    }
+
+    file.open(argv[1]);
+    return true;
+}
+
+int main(int argc, char *argv[])
+{
+    ifstream file;
+
+    int src, weight, dest, v, e;
+
+    get_file(argc, argv, file);
+
+    file >> v;
+    file >> e;
+
+    int graph[v][3];
+
+    int count = 0;
+
+    while (file >> src && file >> dest && file >> weight)
+    {
+        graph[count][0] = src;
+        graph[count][1] = dest;
+        graph[count][2] = weight;
+
+        count++;
+    }
+
+    bellman_ford(graph, v, e, 0);
     return 0;
 }
