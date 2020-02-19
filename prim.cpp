@@ -8,14 +8,15 @@ typedef pair<int, int> my_pair;
 
 void add_edge(vector<pair<int, int>> adj[], int u, int v, int wt)
 {
+    cout << u << " " << v << " " << wt << endl;
     adj[u].push_back(make_pair(v, wt));
-    adj[v].push_back(make_pair(u, wt));
+    // adj[v].push_back(make_pair(u, wt));
 }
 
 void print_edges(vector<int> parent, int n)
 {
     for (int i = 1; i < n; ++i)
-        cout << parent[i] << " - " << i << endl;
+        cout << parent[i] << " -> " << i << endl;
 }
 
 void prim(vector<pair<int, int>> adj[], int V)
@@ -52,18 +53,49 @@ void prim(vector<pair<int, int>> adj[], int V)
     print_edges(parent, V);
 }
 
-int main()
+bool file_exist(string filename)
 {
-    int V = 5;
-    vector<my_pair> adj[V];
+    ifstream f(filename);
+    return f.is_open();
+}
 
-    add_edge(adj, 0, 1, 4);
-    add_edge(adj, 0, 7, 8);
-    add_edge(adj, 1, 2, 8);
-    add_edge(adj, 1, 7, 11);
-    add_edge(adj, 2, 3, 7);
+bool get_file(int argc, char *argv[], ifstream &file)
+{
+    if (argc <= 1)
+    {
+        cout << "Missing Arguments ! " << endl;
+        return false;
+    }
+    else if (!file_exist(argv[1]))
+    {
+        cout << "File " << argv[1] << " not found." << endl;
+        cout << "Try Again! " << endl;
+        return false;
+    }
 
-    prim(adj, V);
+    file.open(argv[1]);
+    return true;
+}
+
+int main(int argc, char *argv[])
+{
+    ifstream file;
+
+    int src, weight, dest, v, e;
+
+    get_file(argc, argv, file);
+
+    file >> v;
+    file >> e;
+
+    vector<my_pair> adj[v];
+
+    while (file >> src && file >> dest && file >> weight)
+    {
+        add_edge(adj, src, dest, weight);
+    }
+
+    prim(adj, v);
 
     return 0;
 }
